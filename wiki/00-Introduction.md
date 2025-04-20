@@ -22,7 +22,45 @@ The Text Summarizer Agent uses a multi-agent approach, orchestrating several spe
 
 ## Architecture Overview
 
-![Text Summarizer Agent Architecture](../docs/assets/text-summarizer-agent-architecture.png)
+```
++---------------------------------------------+
+|             Text Summarizer Agent            |
++---------------------------------------------+
+                       |
+                       | Orchestrates
+                       v
++---------------------------------------------+
+|                                             |
+|  +-------------+      +----------------+    |
+|  | Content     |----->| Extraction     |    |
+|  | Analyzer    |      | Agent          |    |
+|  +-------------+      +----------------+    |
+|         |                     |             |
+|         |                     v             |
+|         |             +----------------+    |
+|         |             | Summarization  |    |
+|         |             | Agent          |    |
+|         |             +----------------+    |
+|         |                     |             |
+|         |                     v             |
+|         |             +----------------+    |
+|         |             | Refinement     |<---+
+|         |             | Agent (Loop)   |    |
+|         |             +----------------+    |
+|         |                     |             |
+|         |                     v             |
+|         +------------> +----------------+    |
+|                        | Format         |    |
+|                        | Agent          |    |
+|                        +----------------+    |
+|                                             |
++---------------------------------------------+
+                       |
+                       v
+              +------------------+
+              | Final Summary    |
+              +------------------+
+```
 
 The architecture follows a pipeline pattern, with each agent building on the work of the previous ones. A custom orchestrator coordinates the flow and manages the iterative refinement process.
 
