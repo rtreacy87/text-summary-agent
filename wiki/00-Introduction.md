@@ -5,8 +5,9 @@ Welcome to the Text Summarizer Agent wiki! This series of guides will walk you t
 ## What You'll Build
 
 You'll build a text summarizer agent that can:
-- Process various types of text content (articles, code, conversations)
-- Generate concise, accurate summaries
+- Process various types of content including text (articles, code, conversations) and visual elements (images, figures, charts)
+- Extract and analyze information from both textual and visual sources
+- Generate concise, accurate summaries that incorporate key information from all content types
 - Customize summaries based on user preferences
 - Iteratively refine summaries for improved quality
 
@@ -14,11 +15,12 @@ You'll build a text summarizer agent that can:
 
 The Text Summarizer Agent uses a multi-agent approach, orchestrating several specialized agents to handle different aspects of the summarization process:
 
-1. **Content Analyzer**: Examines the input text to determine its type, structure, and key characteristics
-2. **Extraction Agent**: Identifies and extracts the most important information
-3. **Summarization Agent**: Generates the initial summary
-4. **Refinement Agent**: Iteratively improves the summary
-5. **Format Agent**: Formats the final summary according to user preferences
+1. **Content Analyzer**: Examines the input content to determine its type (text, images, figures), structure, and key characteristics
+2. **Image Analysis Agent**: Processes and extracts information from images and figures
+3. **Extraction Agent**: Identifies and extracts the most important information from text and analyzed images
+4. **Summarization Agent**: Generates the initial summary incorporating both textual and visual information
+5. **Refinement Agent**: Iteratively improves the summary
+6. **Format Agent**: Formats the final summary according to user preferences
 
 ## Architecture Overview
 
@@ -31,38 +33,49 @@ The Text Summarizer Agent uses a multi-agent approach, orchestrating several spe
                        v
 +---------------------------------------------+
 |                                             |
-|  +-------------+      +----------------+    |
-|  | Content     |----->| Extraction     |    |
-|  | Analyzer    |      | Agent          |    |
-|  +-------------+      +----------------+    |
-|         |                     |             |
-|         |                     v             |
-|         |             +----------------+    |
-|         |             | Summarization  |    |
-|         |             | Agent          |    |
-|         |             +----------------+    |
-|         |                     |             |
-|         |                     v             |
-|         |             +----------------+    |
-|         |             | Refinement     |<---+
-|         |             | Agent (Loop)   |    |
-|         |             +----------------+    |
-|         |                     |             |
-|         |                     v             |
-|         +------------> +----------------+    |
-|                        | Format         |    |
-|                        | Agent          |    |
-|                        +----------------+    |
+|  +-------------+                            |
+|  | Content     |                            |
+|  | Analyzer    |                            |
+|  +-------------+                            |
+|         |                                   |
+|         |-------+                           |
+|         |       |                           |
+|         v       v                           |
+|  +-------------+ +----------------+         |
+|  | Image       | | Extraction     |         |
+|  | Analysis    | | Agent          |         |
+|  +-------------+ +----------------+         |
+|         |               |                   |
+|         +---------------+                   |
+|                 |                           |
+|                 v                           |
+|         +----------------+                  |
+|         | Summarization  |                  |
+|         | Agent          |                  |
+|         +----------------+                  |
+|                 |                           |
+|                 v                           |
+|         +----------------+                  |
+|         | Refinement     |<-----------------+
+|         | Agent (Loop)   |                  |
+|         +----------------+                  |
+|                 |                           |
+|                 v                           |
+|         +----------------+                  |
+|         | Format         |                  |
+|         | Agent          |                  |
+|         +----------------+                  |
 |                                             |
 +---------------------------------------------+
                        |
                        v
               +------------------+
               | Final Summary    |
+              | (Text + Visual)  |
               +------------------+
 ```
 
-The architecture follows a pipeline pattern, with each agent building on the work of the previous ones. A custom orchestrator coordinates the flow and manages the iterative refinement process.
+The architecture follows a pipeline pattern, with each agent building on the work of the previous ones. The Content Analyzer first determines the type of content, then routes it appropriately. The Image Analysis Agent processes visual elements, extracting key information from images, figures, and charts. This information, along with the text content, is passed to the Extraction Agent, which identifies the most important elements. The Summarization Agent then creates a comprehensive summary incorporating both textual and visual information. A custom orchestrator coordinates the entire flow and manages the iterative refinement process to ensure high-quality summaries.
 
 ## Prerequisites
 
